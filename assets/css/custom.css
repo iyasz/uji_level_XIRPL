@@ -2,9 +2,14 @@
 :root {
   --header-height: 3rem;
   --nav-width: 68px;
+  --bg-primary: #F6F9FB;
   --first-color: #4723d9;
   --first-color-light: #afa5d9;
-  --white-color: #f7f6fb;
+  --icon-color: #C0E1F7;
+  --icon-color-hover: #63a1fe;
+  --primary-top: #63a1fe;
+  --white-color: #000;
+  /* f6f9fb */
   --body-font: "Nunito", sans-serif;
   --normal-font-size: 1rem;
   --z-fixed: 100;
@@ -35,14 +40,17 @@ a {
   align-items: center;
   justify-content: space-between;
   padding: 0 1rem;
-  background-color: var(--white-color);
+  background-color: var(--bg-primary);
+  /* background-color: var(--white-color); */
   z-index: var(--z-fixed);
   transition: 0.5s;
 }
 .header_toggle {
-  color: var(--first-color);
+  color: var(--icon-color-hover);
   font-size: 1.5rem;
   cursor: pointer;
+  position: relative;
+  right: 10px;
 }
 .header_img {
   width: 35px;
@@ -61,7 +69,8 @@ a {
   left: -30%;
   width: var(--nav-width);
   height: 100vh;
-  background-color: var(--first-color);
+  /* background-color: var(--first-color); */
+  background-color: #fff;
   padding: 0.5rem 1rem 0 0;
   transition: 0.5s;
   z-index: var(--z-fixed);
@@ -86,10 +95,11 @@ a {
 }
 .nav_logo-icon {
   font-size: 1.25rem;
-  color: var(--white-color);
+  color: var(--primary-top);
+  visibility: hidden;
 }
 .nav_logo-name {
-  color: var(--white-color);
+  color: var(--primary-top);
   font-weight: 700;
 }
 .nav_link {
@@ -101,8 +111,14 @@ a {
 .nav_link:hover {
   color: var(--white-color);
 }
+
+.nav_link:hover .nav_icon {
+  color: var(--icon-color-hover);
+}
 .nav_icon {
   font-size: 1.25rem;
+  color: var(--icon-color);
+  /* color: var(--icon-color); */
 }
 .show {
   left: 0;
@@ -110,16 +126,25 @@ a {
 .body-pd {
   padding-left: calc(var(--nav-width) + 1rem);
 }
+
+#body-pd {
+  background-color: var(--bg-primary);
+}
 .active {
   color: var(--white-color);
 }
+
+.active-icon {
+  color: var(--icon-color-hover);
+}
+
 .active::before {
   content: "";
   position: absolute;
   left: 0;
-  width: 2px;
+  width: 4px;
   height: 32px;
-  background-color: var(--white-color);
+  background-color: var(--primary-top);
 }
 .height-100 {
   height: 100vh;
@@ -150,4 +175,8 @@ a {
   .body-pd {
     padding-left: calc(var(--nav-width) + 188px);
   }
+}
+
+.main {
+  background-color: var(--bg-primary);
 }

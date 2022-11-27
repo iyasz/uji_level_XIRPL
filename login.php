@@ -104,7 +104,7 @@ if (isset($_POST['post_login'])) {
             drag: false,
             pauseOnHover: false,
             color: "red",
-            icon: "",
+            icon: "",
             iconUrl: null,
           });</script>';
     }
