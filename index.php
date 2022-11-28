@@ -23,7 +23,7 @@ $toast = 0;
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bootstrap demo</title>
+    <title>Yasz - Dashboard</title>
 
     <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"> -->
 
@@ -47,16 +47,17 @@ $toast = 0;
     </header>
     <div class="l-navbar" id="nav-bar">
         <nav class="nav">
-            <div> <a href="#" class="nav_logo"> <i class='bx bx-layer nav_logo-icon'></i> <span class="nav_logo-name">YASZ ADMIN!</span> </a>
+            <div> <a href="#" class="nav_logo"> <i class='bx bx-layer nav_logo-icon'></i> <span class="nav_logo-name"><?= strtoupper($_SESSION['admin']['nama']) ?> ADMIN!</span> </a>
                 <div class="nav_list">
                     <a href="#" class="nav_link active"> <i class='bx bx-grid-alt active-icon nav_icon'></i> <span class="nav_name">Dashboard</span> </a>
                     <a href="#" class="nav_link "> <i class='bx bx-user nav_icon'></i> <span class="nav_name">Admin</span>
-                    </a> <a href="#" class="nav_link"><i class='bx bx-package nav_icon'></i> <span class="nav_name">Barang</span> </a> <a href="#" class="nav_link"> <i class='bx bx-bookmark nav_icon'></i> <span class="nav_name">Transaksi</span>
+                    </a> <a href="#" class="nav_link"><i class='bx bx-package nav_icon'></i> <span class="nav_name">Barang</span> </a>
+                    <a href="#" class="nav_link"> <i class='bx bx-clipboard nav_icon'></i> <span class="nav_name">Transaksi</span>
                     </a> <a href="#" class="nav_link"> <i class='bx bx-folder nav_icon'></i> <span class="nav_name">Detail Transaksi</span>
                     </a> <a href="#" class="nav_link"> <i class='bx bx-bar-chart-alt-2 nav_icon'></i> <span class="nav_name">Stats</span> </a>
                 </div>
             </div>
-            <a href="#" class="nav_link"> <i class='bx bx-log-out nav_icon'></i> <span class="nav_name">SignOut</span> </a>
+            <a href="logout.php" class="nav_link"> <i class='bx bx-log-out nav_icon'></i> <span class="nav_name">Log Out</span> </a>
         </nav>
     </div>
     <!--Container Main start-->

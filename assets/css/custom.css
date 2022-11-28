@@ -27,6 +27,9 @@ body {
   font-size: var(--normal-font-size);
   transition: 0.5s;
 }
+
+/* navbar  */
+
 a {
   text-decoration: none;
 }
@@ -180,3 +183,5 @@ a {
 .main {
   background-color: var(--bg-primary);
 }
+
+/* End Navbar  */

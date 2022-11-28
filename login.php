@@ -79,7 +79,8 @@ if (isset($_POST['post_login'])) {
                             <label for="">Username</label>
                             <input type="text" name="username" autocomplete="off" class="form-control mb-3">
                             <label for="">Password</label>
-                            <input type="text" name="password" autocomplete="off" class="form-control">
+                            <input type="password" name="password" id="inputPassword" autocomplete="off" class="form-control">
+                            <input class="form-check-input" type="checkbox" onclick="myShowpassword()"> Show Password
                             <button type="submit" name="post_login" class="btn btn-primary w-100 mt-3 fw-semibold">Login</button>
                         </form>
                     </div>
