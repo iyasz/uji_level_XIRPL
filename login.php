@@ -10,9 +10,9 @@ if (isset($_POST['post_login'])) {
     $username = htmlspecialchars($_POST['username']);
     $password = htmlspecialchars($_POST['password']);
 
-    $selectUser = $conn->query("SELECT * FROM tbl_adm WHERE username = '$username'");
-    $selectPass = $conn->query("SELECT * FROM tbl_adm WHERE username = '$username' AND password = '$password'");
-    $selectAll = $conn->query("SELECT * FROM tbl_adm WHERE username = '$username' AND password = '$password'");
+    $selectUser = $conn->query("SELECT * FROM tbl_admm WHERE username = '$username'");
+    $selectPass = $conn->query("SELECT * FROM tbl_admm WHERE username = '$username' AND password = '$password'");
+    $selectAll = $conn->query("SELECT * FROM tbl_admm WHERE username = '$username' AND password = '$password'");
 
     if (empty($username) or empty($password)) {
         // header('location: login.php');
@@ -71,7 +71,7 @@ if (isset($_POST['post_login'])) {
 <body>
     <div class="container mt-5">
         <div class="row justify-content-center">
-            <div class="col-5">
+            <div class="col-lg-5">
                 <div class="card shadow-sm">
                     <div class="card-body">
                         <h1 class="mb-4">Login Session</h1>
@@ -79,8 +79,8 @@ if (isset($_POST['post_login'])) {
                             <label for="">Username</label>
                             <input type="text" name="username" autocomplete="off" class="form-control mb-3">
                             <label for="">Password</label>
-                            <input type="password" name="password" id="inputPassword" autocomplete="off" class="form-control">
-                            <input class="form-check-input" type="checkbox" onclick="myShowpassword()"> Show Password
+                            <input type="password" name="password" id="inputPassword" autocomplete="off" class="form-control mb-3">
+                            <input class="form-check-input mb-3" type="checkbox" onclick="myShowpassword()"> Show Password
                             <button type="submit" name="post_login" class="btn btn-primary w-100 mt-3 fw-semibold">Login</button>
                         </form>
                     </div>
