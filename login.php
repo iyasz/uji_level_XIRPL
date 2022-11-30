@@ -16,12 +16,12 @@ if (isset($_POST['post_login'])) {
 
     if (empty($username) or empty($password)) {
         // header('location: login.php');
-        $toast = 1;
         // echo '<script>
         // setInterval(function () {
         //     window.location.href="login.php"
         // }, 2000);
         // </script>';
+        $toast = 1;
         // echo "<script>location.replace('login.php')</script>";
     } else {
         if (mysqli_num_rows($selectUser) < 1) {
@@ -79,7 +79,7 @@ if (isset($_POST['post_login'])) {
                     <div class="card-body">
                         <h1 class="mb-4">Login Session</h1>
                         <form action="" method="post">
-                            <label for=""><i class="fa-regular fa-circle-xmark"></i> Username</label>
+                            <label for=""> Username</label>
                             <input type="text" name="username" autocomplete="off" class="form-control mb-3">
                             <label for="">Password</label>
                             <input type="password" name="password" id="inputPassword" autocomplete="off" class="form-control mb-3">
@@ -147,6 +147,10 @@ if (isset($_POST['post_login'])) {
     }
 
     ?>
+
+    <script>
+
+    </script>
 </body>
 
 </html>

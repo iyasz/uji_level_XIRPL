@@ -1,8 +1,15 @@
 <?php
 
 session_start();
-
 require "db.php";
+
+if (!isset($_SESSION['admin'])) {
+    header('Location: login.php');
+    exit;
+}
+
+
+
 
 $toast = 0;
 
@@ -35,6 +42,7 @@ $toast = 0;
     <!-- boxicons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
 
+    <!-- css style  -->
     <link rel="stylesheet" href="assets/css/custom.css">
 
 </head>
