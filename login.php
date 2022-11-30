@@ -10,9 +10,9 @@ if (isset($_POST['post_login'])) {
     $username = htmlspecialchars($_POST['username']);
     $password = htmlspecialchars($_POST['password']);
 
-    $selectUser = $conn->query("SELECT * FROM tbl_admm WHERE username = '$username'");
-    $selectPass = $conn->query("SELECT * FROM tbl_admm WHERE username = '$username' AND password = '$password'");
-    $selectAll = $conn->query("SELECT * FROM tbl_admm WHERE username = '$username' AND password = '$password'");
+    $selectUser = $conn->query("SELECT * FROM tbl_adm WHERE username = '$username'");
+    $selectPass = $conn->query("SELECT * FROM tbl_adm WHERE username = '$username' AND password = '$password'");
+    $selectAll = $conn->query("SELECT * FROM tbl_adm WHERE username = '$username' AND password = '$password'");
 
     if (empty($username) or empty($password)) {
         // header('location: login.php');
@@ -66,6 +66,9 @@ if (isset($_POST['post_login'])) {
     <!-- boxicons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
 
+    <!-- font awesome  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+
 </head>
 
 <body>
@@ -76,7 +79,7 @@ if (isset($_POST['post_login'])) {
                     <div class="card-body">
                         <h1 class="mb-4">Login Session</h1>
                         <form action="" method="post">
-                            <label for="">Username</label>
+                            <label for=""><i class="fa-regular fa-circle-xmark"></i> Username</label>
                             <input type="text" name="username" autocomplete="off" class="form-control mb-3">
                             <label for="">Password</label>
                             <input type="password" name="password" id="inputPassword" autocomplete="off" class="form-control mb-3">
@@ -99,40 +102,47 @@ if (isset($_POST['post_login'])) {
     if ($toast == 1) {
         echo '<script>
         iziToast.show({
-            title: "error",
+       
             message: "Masukan Username dan Password",
+            messageColor: "#f4f4f4",
+            messageSize: "13",
             position: "topCenter",
             drag: false,
             pauseOnHover: false,
-            color: "red",
-            icon: "",
-            iconUrl: null,
+            backgroundColor: "#e15353",
+            icon: "fa-regular fa-circle-xmark",
+            iconColor: "#f4f4f4",
           });</script>';
     }
 
     if ($toast == 2) {
         echo '<script>
-        iziToast.show({
-            title: "error",
-            message: "Username anda tidak terdaftar",
-            position: "topCenter",
-            drag: false,
-            pauseOnHover: false,
-            color: "red",
-            iconUrl: null,
-          });</script>';
+          iziToast.show({
+         
+              message: "Username anda tidak terdaftar",
+              messageColor: "#f4f4f4",
+              messageSize: "13",
+              position: "topCenter",
+              drag: false,
+              pauseOnHover: false,
+              backgroundColor: "#e15353",
+              icon: "fa-regular fa-circle-xmark",
+              iconColor: "#f4f4f4",
+            });</script>';
     }
 
     if ($toast == 3) {
         echo '<script>
         iziToast.show({
-            title: "error",
             message: "Password anda salah",
+            messageColor: "#f4f4f4",
+            messageSize: "13",
             position: "topCenter",
             drag: false,
             pauseOnHover: false,
-            color: "red",
-            iconUrl: null,
+            backgroundColor: "#e15353",
+            icon: "fa-regular fa-circle-xmark",
+            iconColor: "#f4f4f4",
           });</script>';
     }
 
