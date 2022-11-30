@@ -3,23 +3,18 @@
 session_start();
 require "db.php";
 
+$toast = 0;
 if (!isset($_SESSION['admin'])) {
     header('Location: login.php');
     exit;
 }
 
 
+$nama_adm = $_SESSION['admin']['nama'];
 
 
-$toast = 0;
 
-// if (empty($_SESSION['admin'])) {
-//     echo "<script>location.replace('login.php')</script>";
-// } else {
-//     header('location: index.php');
-// }
 
-// var_dump($_SESSION['admin']);
 
 
 ?>
@@ -36,6 +31,9 @@ $toast = 0;
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 
+    <!-- font awesome  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+
     <!-- izitoast  -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/css/iziToast.css">
 
@@ -51,11 +49,11 @@ $toast = 0;
 <body id="body-pd">
     <header class="header" id="header">
         <div class="header_toggle"> <i class='bx bx-menu' id="header-toggle"></i> </div>
-        <div class="header_img"> <img src="https://i.imgur.com/hczKIze.jpg" alt=""> </div>
+        <div class="header_img"> <img src="" alt=""> </div>
     </header>
     <div class="l-navbar" id="nav-bar">
         <nav class="nav">
-            <div> <a href="#" class="nav_logo"> <i class='bx bx-layer nav_logo-icon'></i> <span class="nav_logo-name"><?= strtoupper($_SESSION['admin']['nama']) ?> ADMIN!</span> </a>
+            <div> <a href="" class="nav_logo"> <i class='bx bx-layer nav_logo-icon'></i> <span class="nav_logo-name">I'M <?= strtoupper($nama_adm)  ?> !</span> </a>
                 <div class="nav_list">
                     <a href="#" class="nav_link active"> <i class='bx bx-grid-alt active-icon nav_icon'></i> <span class="nav_name">Dashboard</span> </a>
                     <a href="#" class="nav_link "> <i class='bx bx-user nav_icon'></i> <span class="nav_name">Admin</span>
@@ -65,7 +63,11 @@ $toast = 0;
                     </a> <a href="#" class="nav_link"> <i class='bx bx-bar-chart-alt-2 nav_icon'></i> <span class="nav_name">Stats</span> </a>
                 </div>
             </div>
-            <a href="logout.php" class="nav_link"> <i class='bx bx-log-out nav_icon'></i> <span class="nav_name">Log Out</span> </a>
+            <hr class="mx-3 hr-nav mb-0">
+            <div class="mb-5 mt-0">
+                <a href="" class="nav_link mb-2"><i class='bx bx-cog nav_icon'></i> <span class="nav_name">Settings</span></a>
+                <a href="logout.php" class="nav_link "><i class='bx bx-log-out nav_icon icon-bot'></i> <span class="nav_name name-bot">Log Out</span> </a>
+            </div>
         </nav>
     </div>
     <!--Container Main start-->
@@ -89,48 +91,24 @@ $toast = 0;
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js" integrity="sha512-Zq9o+E00xhhR/7vJ49mxFNJ0KQw1E1TMWkPTxrWcnpfEFDEXgUiwJHIKit93EW/XxE31HSI5GEOW06G6BF1AtA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-    <script src="main.js"></script>
+    <script src="assets/js/main.js"></script>
 
     <?php
 
     if ($toast == 1) {
         echo '<script>
         iziToast.show({
-            title: "error",
-            message: "Masukan Username dan Password",
+            icon: "fa-regular fa-circle-check",
+            message: "Welcome Admin :3",
             position: "topCenter",
             drag: false,
             pauseOnHover: false,
-            color: "red",
+            color: "green",
             iconUrl: null,
+            timeout: 2000,
           });</script>';
     }
 
-    if ($toast == 2) {
-        echo '<script>
-        iziToast.show({
-            title: "error",
-            message: "Username anda tidak terdaftar",
-            position: "topCenter",
-            drag: false,
-            pauseOnHover: false,
-            color: "red",
-            iconUrl: null,
-          });</script>';
-    }
-
-    if ($toast == 3) {
-        echo '<script>
-        iziToast.show({
-            title: "error",
-            message: "Password anda salah",
-            position: "topCenter",
-            drag: false,
-            pauseOnHover: false,
-            color: "red",
-            iconUrl: null,
-          });</script>';
-    }
 
     ?>
 </body>

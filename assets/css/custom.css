@@ -1,16 +1,21 @@
 @import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600&display=swap");
+
 :root {
   --header-height: 3rem;
   --nav-width: 68px;
-  --bg-primary: #F6F9FB;
+  --bg-primary: #f6f9fb;
   --first-color: #4723d9;
   --first-color-light: #afa5d9;
-  --icon-color: #C0E1F7;
+  --icon-color: #c0e1f7;
   --icon-color-hover: #63a1fe;
   --primary-top: #63a1fe;
   --white-color: #000;
+  --red-color: #000;
+  --red-color-hover: #fe6363;
   /* f6f9fb */
   --body-font: "Nunito", sans-serif;
+  --poppins-font: "Poppins", sans-serif;
   --normal-font-size: 1rem;
   --z-fixed: 100;
 }
@@ -118,6 +123,10 @@ a {
 .nav_link:hover .nav_icon {
   color: var(--icon-color-hover);
 }
+
+.nav_link:hover .icon-bot {
+  color: var(--red-color-hover);
+}
 .nav_icon {
   font-size: 1.25rem;
   color: var(--icon-color);
@@ -149,6 +158,8 @@ a {
   height: 32px;
   background-color: var(--primary-top);
 }
+
+
 .height-100 {
   height: 100vh;
 }
@@ -182,6 +193,23 @@ a {
 
 .main {
   background-color: var(--bg-primary);
+}
+
+.icon-bot {
+  color: var(--red-color-hover);
+}
+
+.nav-bot {
+  color: var(--white-color) ;
+}
+
+.name-bot {
+  color: var(--white-color);
+}
+
+.hr-nav {
+  color: var(--first-color-light);
+
 }
 
 /* End Navbar  */
