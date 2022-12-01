@@ -213,3 +213,12 @@ a {
 }
 
 /* End Navbar  */
+
+.input-group-text{
+  background-color: transparent !important;
+  border: 0 !important;
+}
+
+.form-control:disabled {
+  background-color: transparent !important;
+}

@@ -8,25 +8,48 @@ if (!isset($_SESSION['admin'])) {
     header('Location: ../login.php');
     exit;
 }
+$id = $_GET['id'];
 
-$selectAdm = $conn->query("SELECT * FROM tabel_admin");
+$joinAll = $conn->query("SELECT * FROM tabel_transaksi JOIN tabel_admin ON tabel_admin.id_admin = tabel_transaksi.id_admin JOIN tabel_barang ON tabel_barang.id_barang = tabel_transaksi.id_barang WHERE id_transaksi = '$id'");
+
+$datas = mysqli_fetch_assoc($joinAll);
+
+$selectBrg = $conn->query("SELECT * FROM tabel_barang");
+
+// $selectTrx = $conn->query("SELECT * FROM tabel_transaksi");
+// $selectTrxs = $conn->query("SELECT * FROM tabel_transaksi WHERE id_transaksi = '$id'")->fetch_assoc();
+
+// $joinAll = $conn->query("SELECT * FROM tabel_transaksi JOIN tabel_admin ON tabel_admin.id_admin = tabel_transaksi.id_admin JOIN tabel_barang ON tabel_barang.id_barang = tabel_transaksi.id_barang");
+
+// $selectBarang = $conn->query("SELECT * FROM tabel_barang");
+// $selectBarangv = $conn->query("SELECT * FROM tabel_barang")->fetch_assoc();
+
+// $joinAssoc = mysqli_fetch_assoc($joinAll);
+
+// $selectBrg = $conn->query("SELECT * FROM tabel_barang WHERE id_barang = '$id'")->fetch_assoc();
+
+// var_dump($joinAssoc);
+
 $nama_adm = $_SESSION['admin']['nama_adm'];
+$id_adm = $_SESSION['admin']['id_admin'];
 
 if (isset($_POST['post_tambah'])) {
-    $nama = htmlspecialchars($_POST['nama']);
-    $email = htmlspecialchars($_POST['email']);
-    $username = htmlspecialchars($_POST['username']);
-    $password = htmlspecialchars($_POST['password']);
-    $telepon = htmlspecialchars($_POST['telepon']);
-    $alamat = htmlspecialchars($_POST['alamat']);
+    $adm = htmlspecialchars($_POST['admin_name']);
+    $jenis = htmlspecialchars($_POST['jenis']);
+    $jumlah = htmlspecialchars($_POST['jumlah']);
+    $total = htmlspecialchars($_POST['total']);
+    $tgl = htmlspecialchars($_POST['tgl']);
 
-    if (empty($nama) or empty($email) or empty($username) or empty($password) or empty($telepon) or empty($alamat)) {
+    if (empty($adm) or empty($jenis) or empty($jumlah) or empty($total) or empty($tgl)) {
         $toast = 1;
     } else {
+        $selectMinBrg = $conn->query("SELECT * FROM tabel_barang WHERE id_barang = '$jenis'")->fetch_assoc();
+        $kurangBrg = $selectMinBrg['stok_brg'] - $jumlah;
+        $kaliBrg = $jumlah * $selectMinBrg['harga_brg'];
 
-        $simpan = $conn->query("INSERT INTO tabel_admin VALUES (NULL, '$nama', '$email', '$username', '$password', '$telepon', '$alamat')");
+        $update = $conn->query("UPDATE tabel_transaksi SET id_barang = '$jenis', jumlah = '$jumlah', harga_total = '$total', tgl_transaksi = '$tgl' WHERE id_transaksi = '$id'");
 
-        if ($simpan == TRUE) {
+        if ($update == TRUE) {
             $toast = 2;
             echo '<script> setInterval(function () {
                 window.location.href="index.php"
@@ -38,7 +61,7 @@ if (isset($_POST['post_tambah'])) {
 if (isset($_POST['delete'])) {
     $id = $_POST['id'];
 
-    $deleteRow = $conn->query("DELETE FROM tabel_admin WHERE id_admin = '$id'");
+    $deleteRow = $conn->query("DELETE FROM tabel_transaksi WHERE id_transaksi = '$id'");
     if ($deleteRow == TRUE) {
         $toast = 3;
         echo '<script> setInterval(function () {
@@ -60,7 +83,7 @@ if (isset($_POST['delete'])) {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Yasz - Admin</title>
+    <title>Yasz - Transaksi</title>
 
     <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"> -->
 
@@ -94,9 +117,9 @@ if (isset($_POST['delete'])) {
             <div> <a href="../" class="nav_logo"> <i class='bx bx-layer nav_logo-icon'></i> <span class="nav_logo-name">I'M <?= strtoupper($nama_adm)  ?> !</span> </a>
                 <div class="nav_list">
                     <a href="../" class="nav_link "> <i class='bx bx-grid-alt  nav_icon'></i> <span class="nav_name">Dashboard</span> </a>
-                    <a href="/" class="nav_link active"> <i class='bx bx-user active-icon nav_icon'></i> <span class="nav_name">Admin</span>
+                    <a href="../admin/" class="nav_link "> <i class='bx bx-user  nav_icon'></i> <span class="nav_name">Admin</span>
                     </a> <a href="../barang/" class="nav_link"><i class='bx bx-package nav_icon'></i> <span class="nav_name">Barang</span> </a>
-                    <a href="../transaksi/" class="nav_link"> <i class='bx bx-clipboard nav_icon'></i> <span class="nav_name">Transaksi</span>
+                    <a href="" class="nav_link active"> <i class='bx bx-clipboard active-icon nav_icon'></i> <span class="nav_name">Transaksi</span>
                     </a> <a href="../stats/" class="nav_link"> <i class='bx bx-bar-chart-alt-2 nav_icon'></i> <span class="nav_name">Stats</span> </a>
                 </div>
             </div>
@@ -111,8 +134,9 @@ if (isset($_POST['delete'])) {
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <div class=" main">
-                    <h4>Admin's Room</h4>
+                <div class=" main d-flex">
+                    <h4>Edit Transaction's Room</h4>
+                    <a class="ms-auto h4" href="index.php"><i class='bx bx-chevron-left-circle'></i></a>
                 </div>
             </div>
         </div>
@@ -122,78 +146,39 @@ if (isset($_POST['delete'])) {
                     <div class="row justify-content-center">
                         <div class="col-lg-6">
                             <div class="mb-3">
-                                <label class="mb-1" for="">Nama</label>
-                                <input type="text" class="form-control" name="nama" autocomplete="off">
+                                <label class="mb-1" for="">Nama admin</label>
+                                <!-- <select name="admin_name" disabled class="form-select" aria-label="Default select example">
+                                </select> -->
+                                <select name="admin_name" class="form-select" aria-label="Default select example">
+                                    <option value="<?= $id_adm ?>"><?= $nama_adm ?></option>
+                                </select>
                             </div>
                             <div class="mb-3">
-                                <label class="mb-1" for="">Email</label>
-                                <input type="text" class="form-control" name="email" autocomplete="off">
+                                <label class="mb-1" for="">Barang</label>
+                                <select name="jenis" class=" form-select " id="">
+                                    <?php foreach ($selectBrg as $data) { ?>
+                                        <option value="<?= $data['id_barang'] ?>" <?= $datas['id_barang'] == $data['id_barang'] ? 'selected' : '' ?>><?= $data['nama_brg'] ?></option>
+                                    <?php } ?>
+                                </select>
                             </div>
                             <div class="mb-3">
-                                <label class="mb-1" for="">Username</label>
-                                <input type="text" class="form-control" name="username" autocomplete="off">
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="mb-3">
-                                <label class="mb-1" for="">Password</label>
-                                <input type="text" class="form-control" name="password" autocomplete="off">
+                                <label class="mb-1" for="">Jumlah</label>
+                                <input type="text" value="<?= $datas['jumlah'] ?>" class="form-control" name="jumlah" autocomplete="off">
                             </div>
                             <div class="mb-3">
-                                <label class="mb-1" for="">Telepon</label>
-                                <input type="text" class="form-control" name="telepon" autocomplete="off">
+                                <label class="mb-1" for="">Total Harga</label>
+                                <input type="text" value="<?= $datas['harga_total'] ?>" class="form-control" name="total" autocomplete="off">
                             </div>
                             <div class="mb-3">
-                                <label class="mb-1" for="">Alamat</label>
-                                <input type="text" class="form-control" name="alamat" autocomplete="off">
+                                <label class="mb-1" for="">Tanggal Transaksi</label>
+                                <input type="date" value="<?= $datas['tgl_transaksi'] ?>" class="form-control" name="tgl" autocomplete="off">
                             </div>
                             <div class="">
-                                <button type="submit" class="btn btn-primary btn_crud mt-3" name="post_tambah">Tambahkan</button>
+                                <button type="submit" class="btn btn-primary btn_crud mt-3" name="post_tambah">Update</button>
                             </div>
                         </div>
                     </div>
                 </form>
-            </div>
-        </div>
-        <div class="row table-content">
-            <div class="col-lg-12">
-                <table class="table" id="table">
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>Nama</th>
-                            <th>Email</th>
-                            <th>Username</th>
-                            <th>Password</th>
-                            <th>Telepon</th>
-                            <th>Alamat</th>
-                            <th class="text-center">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php $no = 1;
-                        foreach ($selectAdm as $select) { ?>
-                            <tr>
-                                <td><?= $no++ ?></td>
-                                <td><?= $select['nama_adm'] ?></td>
-                                <td><?= $select['email_adm'] ?></td>
-                                <td><?= $select['username_adm'] ?></td>
-                                <td><?= $select['password_adm'] ?></td>
-                                <td><?= $select['telepon_adm'] ?></td>
-                                <td><?= $select['alamat_adm'] ?></td>
-                                <td class="gap-1 d-flex justify-content-center">
-                                    <a class="btn btn-primary btn-sm" href="edit.php?id=<?= $select['id_admin'] ?>"><i class='bx bxs-pencil'></i></a>
-                                    <div class="">
-                                        <form action="" method="post">
-                                            <input type="hidden" value="<?= $select['id_admin'] ?>" name="id">
-                                            <button name="delete" class="btn btn-danger btn-sm" type="submit"><i class='bx bx-trash'></i></button>
-                                        </form>
-                                    </div>
-                                </td>
-                            </tr>
-                        <?php } ?>
-                    </tbody>
-                </table>
             </div>
         </div>
     </div>
@@ -232,7 +217,7 @@ if (isset($_POST['delete'])) {
         echo '<script>
         iziToast.show({
             icon: "fa-regular fa-circle-check",
-            message: "Data Berhasil Disimpan!",
+            message: "Data Berhasil Diubah!",
             position: "topCenter",
             drag: false,
             pauseOnHover: false,
@@ -257,6 +242,17 @@ if (isset($_POST['delete'])) {
     }
 
     ?>
+
+    <script>
+        function myShowpassword() {
+            var x = document.getElementById("inputPassword");
+            if (x.type === "password") {
+                x.type = "text";
+            } else {
+                x.type = "password";
+            }
+        }
+    </script>
 
 </body>
 

@@ -1,3 +1,7 @@
+$(document).ready(function () {
+  $("table").DataTable();
+});
+
 // if ($toast == 1) {
 //   iziToast.show({
 //     title: "error",
@@ -52,14 +56,5 @@ document.addEventListener("DOMContentLoaded", function (event) {
 // end sidebasr
 
 // login
-
-function myShowpassword() {
-  var x = document.getElementById("inputPassword");
-  if (x.type === "password") {
-    x.type = "text";
-  } else {
-    x.type = "password";
-  }
-}
 
 // End Login

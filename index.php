@@ -4,13 +4,13 @@ session_start();
 require "db.php";
 
 $toast = 0;
-if (!isset($_SESSION['admin'])) {
-    header('Location: login.php');
-    exit;
-}
+// if (!isset($_SESSION["admin"])) {
+//     header('Location: login.php');
+//     exit;
+// }
 
 
-$nama_adm = $_SESSION['admin']['nama'];
+$nama_adm = $_SESSION['admin']['nama_adm'];
 
 
 
@@ -56,11 +56,10 @@ $nama_adm = $_SESSION['admin']['nama'];
             <div> <a href="" class="nav_logo"> <i class='bx bx-layer nav_logo-icon'></i> <span class="nav_logo-name">I'M <?= strtoupper($nama_adm)  ?> !</span> </a>
                 <div class="nav_list">
                     <a href="#" class="nav_link active"> <i class='bx bx-grid-alt active-icon nav_icon'></i> <span class="nav_name">Dashboard</span> </a>
-                    <a href="#" class="nav_link "> <i class='bx bx-user nav_icon'></i> <span class="nav_name">Admin</span>
-                    </a> <a href="#" class="nav_link"><i class='bx bx-package nav_icon'></i> <span class="nav_name">Barang</span> </a>
-                    <a href="#" class="nav_link"> <i class='bx bx-clipboard nav_icon'></i> <span class="nav_name">Transaksi</span>
-                    </a> <a href="#" class="nav_link"> <i class='bx bx-folder nav_icon'></i> <span class="nav_name">Detail Transaksi</span>
-                    </a> <a href="#" class="nav_link"> <i class='bx bx-bar-chart-alt-2 nav_icon'></i> <span class="nav_name">Stats</span> </a>
+                    <a href="admin/" class="nav_link "> <i class='bx bx-user nav_icon'></i> <span class="nav_name">Admin</span>
+                    </a> <a href="barang/" class="nav_link"><i class='bx bx-package nav_icon'></i> <span class="nav_name">Barang</span> </a>
+                    <a href="transaksi/" class="nav_link"> <i class='bx bx-clipboard nav_icon'></i> <span class="nav_name">Transaksi</span>
+                    </a> <a href="stats/" class="nav_link"> <i class='bx bx-bar-chart-alt-2 nav_icon'></i> <span class="nav_name">Stats</span> </a>
                 </div>
             </div>
             <hr class="mx-3 hr-nav mb-0">
@@ -77,6 +76,7 @@ $nama_adm = $_SESSION['admin']['nama'];
 
                 <div class="height-100 main">
                     <h4>Your Dashboard</h4>
+                    <h1>Hello <?= strtoupper($nama_adm)  ?> :)</h1>
                 </div>
             </div>
         </div>

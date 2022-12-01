@@ -9,10 +9,14 @@ if (!isset($_SESSION['admin'])) {
     exit;
 }
 
-$selectAdm = $conn->query("SELECT * FROM tabel_admin");
 $nama_adm = $_SESSION['admin']['nama_adm'];
 
-if (isset($_POST['post_tambah'])) {
+$id = $_GET['id'];
+$selectAdm = $conn->query("SELECT * FROM tabel_admin WHERE id_admin = '$id'");
+$datas = mysqli_fetch_assoc($selectAdm);
+
+
+if (isset($_POST['post_update'])) {
     $nama = htmlspecialchars($_POST['nama']);
     $email = htmlspecialchars($_POST['email']);
     $username = htmlspecialchars($_POST['username']);
@@ -24,9 +28,9 @@ if (isset($_POST['post_tambah'])) {
         $toast = 1;
     } else {
 
-        $simpan = $conn->query("INSERT INTO tabel_admin VALUES (NULL, '$nama', '$email', '$username', '$password', '$telepon', '$alamat')");
+        $update = $conn->query("UPDATE tabel_admin SET nama_adm = '$nama', email_adm = '$email', username_adm = '$username', password_adm = '$password',telepon_adm = '$telepon', alamat_adm = '$alamat' WHERE id_admin = '$id'");
 
-        if ($simpan == TRUE) {
+        if ($update == TRUE) {
             $toast = 2;
             echo '<script> setInterval(function () {
                 window.location.href="index.php"
@@ -35,17 +39,6 @@ if (isset($_POST['post_tambah'])) {
     }
 }
 
-if (isset($_POST['delete'])) {
-    $id = $_POST['id'];
-
-    $deleteRow = $conn->query("DELETE FROM tabel_admin WHERE id_admin = '$id'");
-    if ($deleteRow == TRUE) {
-        $toast = 3;
-        echo '<script> setInterval(function () {
-            window.location.href="index.php"
-        }, 2000);</script>';
-    }
-}
 
 
 
@@ -111,8 +104,9 @@ if (isset($_POST['delete'])) {
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <div class=" main">
-                    <h4>Admin's Room</h4>
+                <div class=" main d-flex">
+                    <h4>Edit Admin's Room</h4>
+                    <a class="ms-auto h4" href="index.php"><i class='bx bx-chevron-left-circle'></i></a>
                 </div>
             </div>
         </div>
@@ -123,77 +117,36 @@ if (isset($_POST['delete'])) {
                         <div class="col-lg-6">
                             <div class="mb-3">
                                 <label class="mb-1" for="">Nama</label>
-                                <input type="text" class="form-control" name="nama" autocomplete="off">
+                                <input type="text" class="form-control" value="<?= $datas['nama_adm'] ?>" name="nama" autocomplete="off">
                             </div>
                             <div class="mb-3">
                                 <label class="mb-1" for="">Email</label>
-                                <input type="text" class="form-control" name="email" autocomplete="off">
+                                <input type="text" class="form-control" value="<?= $datas['email_adm'] ?>" name="email" autocomplete="off">
                             </div>
                             <div class="mb-3">
                                 <label class="mb-1" for="">Username</label>
-                                <input type="text" class="form-control" name="username" autocomplete="off">
+                                <input type="text" class="form-control" value="<?= $datas['username_adm'] ?>" name="username" autocomplete="off">
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="mb-3">
                                 <label class="mb-1" for="">Password</label>
-                                <input type="text" class="form-control" name="password" autocomplete="off">
+                                <input type="text" class="form-control" value="<?= $datas['password_adm'] ?>" name="password" autocomplete="off">
                             </div>
                             <div class="mb-3">
                                 <label class="mb-1" for="">Telepon</label>
-                                <input type="text" class="form-control" name="telepon" autocomplete="off">
+                                <input type="text" class="form-control" value="<?= $datas['telepon_adm'] ?>" name="telepon" autocomplete="off">
                             </div>
                             <div class="mb-3">
                                 <label class="mb-1" for="">Alamat</label>
-                                <input type="text" class="form-control" name="alamat" autocomplete="off">
+                                <input type="text" class="form-control" value="<?= $datas['alamat_adm'] ?>" name="alamat" autocomplete="off">
                             </div>
                             <div class="">
-                                <button type="submit" class="btn btn-primary btn_crud mt-3" name="post_tambah">Tambahkan</button>
+                                <button type="submit" class="btn btn-primary btn_crud mt-3" name="post_update">Update</button>
                             </div>
                         </div>
                     </div>
                 </form>
-            </div>
-        </div>
-        <div class="row table-content">
-            <div class="col-lg-12">
-                <table class="table" id="table">
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>Nama</th>
-                            <th>Email</th>
-                            <th>Username</th>
-                            <th>Password</th>
-                            <th>Telepon</th>
-                            <th>Alamat</th>
-                            <th class="text-center">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php $no = 1;
-                        foreach ($selectAdm as $select) { ?>
-                            <tr>
-                                <td><?= $no++ ?></td>
-                                <td><?= $select['nama_adm'] ?></td>
-                                <td><?= $select['email_adm'] ?></td>
-                                <td><?= $select['username_adm'] ?></td>
-                                <td><?= $select['password_adm'] ?></td>
-                                <td><?= $select['telepon_adm'] ?></td>
-                                <td><?= $select['alamat_adm'] ?></td>
-                                <td class="gap-1 d-flex justify-content-center">
-                                    <a class="btn btn-primary btn-sm" href="edit.php?id=<?= $select['id_admin'] ?>"><i class='bx bxs-pencil'></i></a>
-                                    <div class="">
-                                        <form action="" method="post">
-                                            <input type="hidden" value="<?= $select['id_admin'] ?>" name="id">
-                                            <button name="delete" class="btn btn-danger btn-sm" type="submit"><i class='bx bx-trash'></i></button>
-                                        </form>
-                                    </div>
-                                </td>
-                            </tr>
-                        <?php } ?>
-                    </tbody>
-                </table>
             </div>
         </div>
     </div>
@@ -232,7 +185,7 @@ if (isset($_POST['delete'])) {
         echo '<script>
         iziToast.show({
             icon: "fa-regular fa-circle-check",
-            message: "Data Berhasil Disimpan!",
+            message: "Data Berhasil Diubah!",
             position: "topCenter",
             drag: false,
             pauseOnHover: false,
@@ -242,19 +195,6 @@ if (isset($_POST['delete'])) {
           });</script>';
     }
 
-    if ($toast == 3) {
-        echo '<script>
-        iziToast.show({
-            icon: "fa-regular fa-circle-check",
-            message: "Data Berhasil Dihapus!",
-            position: "topCenter",
-            drag: false,
-            pauseOnHover: false,
-            color: "green",
-            iconUrl: null,
-            timeout: 2000,
-          });</script>';
-    }
 
     ?>
 

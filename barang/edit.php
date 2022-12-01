@@ -9,10 +9,14 @@ if (!isset($_SESSION['admin'])) {
     exit;
 }
 
-$selectBrg = $conn->query("SELECT * FROM tabel_barang");
 $nama_adm = $_SESSION['admin']['nama_adm'];
 
-if (isset($_POST['post_tambah'])) {
+$id = $_GET['id'];
+$selectBrg = $conn->query("SELECT * FROM tabel_barang WHERE id_barang = '$id'");
+$datas = mysqli_fetch_assoc($selectBrg);
+
+
+if (isset($_POST['post_update'])) {
     $nama = htmlspecialchars($_POST['nama']);
     $jenis = htmlspecialchars($_POST['jenis']);
     $harga = htmlspecialchars($_POST['harga']);
@@ -22,9 +26,9 @@ if (isset($_POST['post_tambah'])) {
         $toast = 1;
     } else {
 
-        $simpan = $conn->query("INSERT INTO tabel_barang VALUES (NULL, '$nama', '$jenis', '$harga', '$stok')");
+        $update = $conn->query("UPDATE tabel_barang SET nama_brg = '$nama', jenis_brg = '$jenis', harga_brg = '$harga', stok_brg = '$stok' WHERE id_barang = '$id'");
 
-        if ($simpan == TRUE) {
+        if ($update == TRUE) {
             $toast = 2;
             echo '<script> setInterval(function () {
                 window.location.href="index.php"
@@ -33,17 +37,6 @@ if (isset($_POST['post_tambah'])) {
     }
 }
 
-if (isset($_POST['delete'])) {
-    $id = $_POST['id'];
-
-    $deleteRow = $conn->query("DELETE FROM tabel_barang WHERE id_barang = '$id'");
-    if ($deleteRow == TRUE) {
-        $toast = 3;
-        echo '<script> setInterval(function () {
-            window.location.href="index.php"
-        }, 2000);</script>';
-    }
-}
 
 
 
@@ -109,79 +102,53 @@ if (isset($_POST['delete'])) {
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <div class=" main">
-                    <h4>Barang's Room</h4>
+                <div class=" main d-flex">
+                    <h4>Edit Barang's Room</h4>
+                    <a class="ms-auto h4" href="index.php"><i class='bx bx-chevron-left-circle'></i></a>
                 </div>
             </div>
         </div>
         <div class="row mt-5">
             <div class="col-lg-12">
                 <form action="" method="post">
-                    <div class="row justify-content-center">
-                        <div class="col-lg-5">
-                            <div class="mb-3">
-                                <label class="mb-1" for="">Nama Barang</label>
-                                <input type="text" class="form-control" name="nama" autocomplete="off">
-                            </div>
-                            <div class="mb-3">
-                                <label class="mb-1" for="">Jenis Barang</label>
-                                <select name="jenis" class="form-select" aria-label="Default select example">
-                                    <option selected></option>
-                                    <option value="Makanan">Makanan</option>
-                                    <option value="Minuman">Minuman</option>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label class="mb-1" for="">Harga Barang</label>
-                                <input type="text" class="form-control" name="harga" autocomplete="off">
-                            </div>
-                            <div class="mb-3">
-                                <label class="mb-1" for="">Stok Barang</label>
-                                <input type="text" class="form-control" name="stok" autocomplete="off">
-                            </div>
-                            <div class="text-end">
-                                <button type="submit" class="btn btn-primary btn_crud mt-3" name="post_tambah">Tambahkan</button>
-                            </div>
+                    <div class="row mt-5">
+                        <div class="col-lg-12">
+                            <form action="" method="post">
+                                <div class="row justify-content-center">
+                                    <div class="col-lg-5">
+                                        <div class="mb-3">
+                                            <label class="mb-1" for="">Nama Barang</label>
+                                            <input type="text" class="form-control" value="<?= $datas['nama_brg'] ?>" name="nama" autocomplete="off">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="mb-1" for="">Jenis Barang</label>
+                                            <select name="jenis" class="form-select aa" aria-label="Default select example">
+                                                <option selected></option>
+                                                <option <?php if ($datas['jenis_brg'] == "Makanan") {
+                                                            echo "selected";
+                                                        } ?> value="Makanan">Makanan</option>
+                                                <option <?php if ($datas['jenis_brg'] == "Minuman") {
+                                                            echo "selected";
+                                                        } ?> value="Minuman">Minuman</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="mb-1" for="">Harga Barang</label>
+                                            <input type="text" value="<?= $datas['harga_brg'] ?>" class="form-control" name="harga" autocomplete="off">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="mb-1" for="">Stok Barang</label>
+                                            <input type="text" value="<?= $datas['stok_brg'] ?>" class="form-control" name="stok" autocomplete="off">
+                                        </div>
+                                        <div class="text-end">
+                                            <button type="submit" class="btn btn-primary btn_crud mt-3" name="post_update">Update</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </form>
-            </div>
-        </div>
-        <div class="row table-content">
-            <div class="col-lg-12">
-                <table class="table" id="table">
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>Nama Barang</th>
-                            <th>Jenis Barang</th>
-                            <th>Harga Barang</th>
-                            <th>Stok Barang</th>
-                            <th class="text-center">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php $no = 1;
-                        foreach ($selectBrg as $select) { ?>
-                            <tr>
-                                <td><?= $no++ ?></td>
-                                <td><?= $select['nama_brg'] ?></td>
-                                <td><?= $select['jenis_brg'] ?></td>
-                                <td><?= $select['harga_brg'] ?></td>
-                                <td><?= $select['stok_brg'] ?></td>
-                                <td class="gap-1 d-flex justify-content-center">
-                                    <a class="btn btn-primary btn-sm" href="edit.php?id=<?= $select['id_barang'] ?>"><i class='bx bxs-pencil'></i></a>
-                                    <div class="">
-                                        <form action="" method="post">
-                                            <input type="hidden" value="<?= $select['id_barang'] ?>" name="id">
-                                            <button name="delete" class="btn btn-danger btn-sm" type="submit"><i class='bx bx-trash'></i></button>
-                                        </form>
-                                    </div>
-                                </td>
-                            </tr>
-                        <?php } ?>
-                    </tbody>
-                </table>
             </div>
         </div>
     </div>
@@ -220,7 +187,7 @@ if (isset($_POST['delete'])) {
         echo '<script>
         iziToast.show({
             icon: "fa-regular fa-circle-check",
-            message: "Data Berhasil Disimpan!",
+            message: "Data Berhasil Diubah!",
             position: "topCenter",
             drag: false,
             pauseOnHover: false,
@@ -230,19 +197,6 @@ if (isset($_POST['delete'])) {
           });</script>';
     }
 
-    if ($toast == 3) {
-        echo '<script>
-        iziToast.show({
-            icon: "fa-regular fa-circle-check",
-            message: "Data Berhasil Dihapus!",
-            position: "topCenter",
-            drag: false,
-            pauseOnHover: false,
-            color: "green",
-            iconUrl: null,
-            timeout: 2000,
-          });</script>';
-    }
 
     ?>
 

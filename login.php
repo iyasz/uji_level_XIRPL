@@ -1,7 +1,7 @@
 <?php
-session_start();
 
 require "db.php";
+session_start();
 
 $olds = [];
 $toast = 0;
@@ -10,9 +10,9 @@ if (isset($_POST['post_login'])) {
     $username = htmlspecialchars($_POST['username']);
     $password = htmlspecialchars($_POST['password']);
 
-    $selectUser = $conn->query("SELECT * FROM tbl_adm WHERE username = '$username'");
-    $selectPass = $conn->query("SELECT * FROM tbl_adm WHERE username = '$username' AND password = '$password'");
-    $selectAll = $conn->query("SELECT * FROM tbl_adm WHERE username = '$username' AND password = '$password'");
+    $selectUser = $conn->query("SELECT * FROM tabel_admin WHERE username_adm = '$username'");
+    $selectPass = $conn->query("SELECT * FROM tabel_admin WHERE username_adm = '$username' AND password_adm = '$password'");
+    $selectAll = $conn->query("SELECT * FROM tabel_admin WHERE username_adm = '$username' AND password_adm = '$password'")->fetch_assoc();
 
     if (empty($username) or empty($password)) {
         // header('location: login.php');
@@ -41,8 +41,10 @@ if (isset($_POST['post_login'])) {
                 // }, 2000);
                 // </script>';
             } else {
-                $_SESSION['admin'] = $selectAll->fetch_assoc();
-                echo "<script>location.replace('index.php')</script>";
+                // $_SESSION['admin'] = $row['username'];
+                $_SESSION["admin"] = $selectAll;
+                header("location: index.php");
+                // echo "<script>location.replace('index.php')</script>";
             }
         }
     }
@@ -74,16 +76,21 @@ if (isset($_POST['post_login'])) {
 <body>
     <div class="container mt-5">
         <div class="row justify-content-center">
-            <div class="col-lg-5">
-                <div class="card shadow-sm">
+            <div class="col-lg-5 mt-5">
+                <div class="card shadow-sm mt-5">
                     <div class="card-body">
-                        <h1 class="mb-4">Login Session</h1>
+                        <h1 class="mb-4">Login </h1>
                         <form action="" method="post">
                             <label for=""> Username</label>
-                            <input type="text" name="username" autocomplete="off" class="form-control mb-3">
+                            <div class="input-group mb-3">
+                                <span class="input-group-text" id="basic-addon1"><i class="fa-regular fa-user"></i></span>
+                                <input autocomplete="off" type="text" name="username" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+                            </div>
                             <label for="">Password</label>
-                            <input type="password" name="password" id="inputPassword" autocomplete="off" class="form-control mb-3">
-                            <input class="form-check-input mb-3" type="checkbox" onclick="myShowpassword()"> Show Password
+                            <div class="input-group mb-3">
+                                <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-lock"></i></span>
+                                <input autocomplete="off" type="password" id="inputPassword" name="password" placeholder="Password" class="form-control" aria-label="Amount (to the nearest dollar)">
+                            </div>
                             <button type="submit" name="post_login" class="btn btn-primary w-100 mt-3 fw-semibold">Login</button>
                         </form>
                     </div>
